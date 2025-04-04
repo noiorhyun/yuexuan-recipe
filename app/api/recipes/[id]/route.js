@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
-import { connectToDatabase } from '../../../../lib/mongodb';
+import clientPromise from '../../../../lib/mongodb';
 
 /**
  * @swagger
@@ -58,25 +58,22 @@ import { connectToDatabase } from '../../../../lib/mongodb';
  *       500:
  *         description: Server error
  */
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req, { params }) {
   try {
-    const client = await connectToDatabase();
+    const client = await clientPromise;
     const db = client.db('recipe_db');
-    
+
     const recipe = await db.collection('recipes').findOne({
       _id: new ObjectId(params.id)
     });
-    
+
     if (!recipe) {
       return NextResponse.json(
         { error: 'Recipe not found' },
         { status: 404 }
       );
     }
-    
+
     return NextResponse.json(recipe);
   } catch (error) {
     return NextResponse.json(

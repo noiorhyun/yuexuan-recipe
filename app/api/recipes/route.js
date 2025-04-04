@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '../../../lib/mongodb';
+import clientPromise from '../../../lib/mongodb';
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ import { connectToDatabase } from '../../../lib/mongodb';
  */
 export async function GET() {
   try {
-    const client = await connectToDatabase();
+    const client = await clientPromise;
     const db = client.db('recipe_db');
     const recipes = await db.collection('recipes').find({}).toArray();
     
@@ -91,7 +91,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const body = await request.json();
     
@@ -103,7 +103,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const client = await connectToDatabase();
+    const client = await clientPromise;
     const db = client.db('recipe_db');
     
     const result = await db.collection('recipes').insertOne({

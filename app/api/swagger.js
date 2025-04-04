@@ -1,6 +1,6 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 
-const options: swaggerJsdoc.Options = {
+const options = {
   definition: {
     openapi: '3.0.0',
     info: {
@@ -15,7 +15,9 @@ const options: swaggerJsdoc.Options = {
       },
     ],
   },
-  apis: ['./app/api/**/*.ts'], // Path to the API routes
+  apis: ['./app/api/**/*.js'], // Path to the API routes
 };
 
-export const swaggerSpec = swaggerJsdoc(options); 
+const swaggerSpec = swaggerJsdoc(options);
+
+export default swaggerSpec; 
