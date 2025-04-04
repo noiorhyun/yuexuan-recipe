@@ -82,3 +82,31 @@ export async function GET(req, { params }) {
     );
   }
 } 
+
+export async function DELETE(request, { params }) {
+  try {
+    const client = await clientPromise;
+    const db = client.db('recipe_db');
+    
+    const result = await db.collection('recipes').deleteOne({
+      _id: new ObjectId(params.id)
+    });
+    
+    if (result.deletedCount === 0) {
+      return NextResponse.json(
+        { error: 'Recipe not found' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json(
+      { message: 'Recipe deleted successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to delete recipe' },
+      { status: 500 }
+    );
+  }
+}

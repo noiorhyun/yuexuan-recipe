@@ -187,6 +187,45 @@ const options = {
               description: 'Server error'
             }
           }
+        },
+        delete: {
+          summary: 'Delete a recipe by ID',
+          description: 'Deletes a single recipe',
+          parameters: [
+            {
+              in: 'path',
+              name: 'id',
+              required: true,
+              schema: {
+                type: 'string'
+              },
+              description: 'Recipe ID'
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Recipe deleted successfully',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      message: {
+                        type: 'string',
+                        example: 'Recipe deleted successfully'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            404: {
+              description: 'Recipe not found'
+            },
+            500: {
+              description: 'Server error'
+            }
+          }
         }
       }
     }
