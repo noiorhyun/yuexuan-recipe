@@ -1,5 +1,9 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 
+const serverUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -10,8 +14,8 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server',
+        url: serverUrl,
+        description: 'Current server',
       },
     ],
   },
@@ -20,4 +24,4 @@ const options = {
 
 const swaggerSpec = swaggerJsdoc(options);
 
-export default swaggerSpec; 
+export default swaggerSpec;
