@@ -113,6 +113,7 @@ export async function DELETE(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    const { id } = await params;
     const body = await request.json();
     
     // Validate required fields
@@ -126,28 +127,43 @@ export async function PUT(request, { params }) {
     const client = await clientPromise;
     const db = client.db('recipe_db');
     
+    console.log('Attempting to update recipe with ID:', id);
+    console.log('Update data:', body);
+    
     const result = await db.collection('recipes').findOneAndUpdate(
-      { _id: new ObjectId(params.id) },
+      { _id: new ObjectId(id) },
       {
         $set: {
           ...body,
           updatedAt: new Date()
         }
       },
-      { returnDocument: 'after' }
+      { 
+        returnDocument: 'after',
+        returnNewDocument: true,
+        upsert: false
+      }
     );
     
-    if (!result.value) {
+    console.log('Update result:', JSON.stringify(result, null, 2));
+    
+    if (!result) {
+      console.log('No recipe found with ID:', id);
       return NextResponse.json(
         { error: 'Recipe not found' },
         { status: 404 }
       );
     }
     
-    return NextResponse.json(result.value);
+    return NextResponse.json(result);
   } catch (error) {
+    console.error('Error updating recipe:', error);
     return NextResponse.json(
-      { error: 'Failed to update recipe' },
+      { 
+        error: 'Failed to update recipe',
+        details: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     );
   }
