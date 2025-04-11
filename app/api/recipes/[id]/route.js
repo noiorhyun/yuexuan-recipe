@@ -110,3 +110,45 @@ export async function DELETE(request, { params }) {
     );
   }
 }
+
+export async function PUT(request, { params }) {
+  try {
+    const body = await request.json();
+    
+    // Validate required fields
+    if (!body.name || !body.ingredients || !body.instructions || !body.cookingTime || !body.servings) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    const client = await clientPromise;
+    const db = client.db('recipe_db');
+    
+    const result = await db.collection('recipes').findOneAndUpdate(
+      { _id: new ObjectId(params.id) },
+      {
+        $set: {
+          ...body,
+          updatedAt: new Date()
+        }
+      },
+      { returnDocument: 'after' }
+    );
+    
+    if (!result.value) {
+      return NextResponse.json(
+        { error: 'Recipe not found' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json(result.value);
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to update recipe' },
+      { status: 500 }
+    );
+  }
+}

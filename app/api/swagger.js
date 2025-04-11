@@ -226,6 +226,52 @@ const options = {
               description: 'Server error'
             }
           }
+        },
+        put: {
+          summary: 'Update a recipe by ID',
+          description: 'Updates an existing recipe',
+          parameters: [
+            {
+              in: 'path',
+              name: 'id',
+              required: true,
+              schema: {
+                type: 'string'
+              },
+              description: 'Recipe ID'
+            }
+          ],
+          requestBody: {
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/RecipeInput'
+                }
+              }
+            }
+          },
+          responses: {
+            200: {
+              description: 'Recipe updated successfully',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Recipe'
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid input'
+            },
+            404: {
+              description: 'Recipe not found'
+            },
+            500: {
+              description: 'Server error'
+            }
+          }
         }
       }
     }

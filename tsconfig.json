@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/api/docs/route.js", "app/api/swagger.js", "lib/mongodb.js", "app/api/recipes/route.js", "app/api/recipes/[id]/route.js"  ],
   "exclude": [
     "node_modules"
   ]
