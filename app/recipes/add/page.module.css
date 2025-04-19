@@ -1,0 +1,151 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+}
+
+.arrayItem {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.arrayItem input,
+.arrayItem textarea {
+  flex: 1;
+}
+
+.addButton,
+.removeButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addButton {
+  background-color: #e6f7ff;
+  color: #0070f3;
+}
+
+.addButton:hover {
+  background-color: #b3e0ff;
+}
+
+.removeButton {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.removeButton:hover {
+  background-color: #ffcdd2;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.submitButton,
+.cancelButton {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton {
+  background-color: #0070f3;
+  color: white;
+}
+
+.submitButton:hover {
+  background-color: #0051b3;
+}
+
+.cancelButton {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.cancelButton:hover {
+  background-color: #e0e0e0;
+}
+
+.error {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: #ffebee;
+  color: #c62828;
+  border-radius: 4px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  .form {
+    padding: 1rem;
+  }
+
+  .arrayItem {
+    flex-direction: column;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+} 
