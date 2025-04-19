@@ -1,18 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
+import LoginForm from "./components/LoginForm";
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to RecipeNest</h1>
-        <p className={styles.description}>Your personal recipe collection</p>
+        <div className={styles.hero}>
+          <h1 className={styles.title}>Welcome to RecipeNest</h1>
+          <p className={styles.description}>Your personal recipe collection</p>
+        </div>
         
-        <div className={styles.ctas}>
-          <Link href="/recipes" className={styles.primary}>
-            View All Recipes
-          </Link>
+        <div className={styles.content}>
+          <div className={styles.ctas}>
+            <Link href="/recipes" className={styles.primary}>
+              View All Recipes
+            </Link>
+          </div>
+          
+          <div className={styles.loginSection}>
+            <LoginForm />
+          </div>
         </div>
       </main>
       <footer className={styles.footer}>

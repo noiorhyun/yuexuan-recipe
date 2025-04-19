@@ -25,44 +25,97 @@
 
 .main {
   flex: 1;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+}
+
+.hero {
   text-align: center;
+  margin-bottom: 3rem;
 }
 
 .title {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
   color: #333;
 }
 
 .description {
+  margin: 1rem 0;
+  line-height: 1.5;
   font-size: 1.5rem;
   color: #666;
-  margin-bottom: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .ctas {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
 }
 
 .primary {
+  padding: 0.75rem 1.5rem;
   background-color: #0070f3;
   color: white;
-  padding: 1rem 2rem;
-  border-radius: 5px;
   text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
 
 .primary:hover {
   background-color: #0051b3;
+}
+
+.loginSection {
+  width: 100%;
+  max-width: 400px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border-top: 1px solid #eaeaea;
+}
+
+.footer a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  text-decoration: none;
+  margin: 0 1rem;
+}
+
+.footer a:hover {
+  color: #0070f3;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 3rem;
+  }
+  
+  .description {
+    font-size: 1.25rem;
+  }
+  
+  .content {
+    padding: 0 1rem;
+  }
 }
 
 .main ol {
@@ -110,65 +163,6 @@
 a.secondary {
   border-color: var(--gray-alpha-200);
   min-width: 158px;
-}
-
-.footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
-}
-
-.footer a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer img {
-  flex-shrink: 0;
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-}
-
-@media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
-  }
-
-  .main {
-    align-items: center;
-  }
-
-  .main ol {
-    text-align: center;
-  }
-
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
