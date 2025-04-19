@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import styles from './page.module.css';
 
 export default function RecipesPage() {
@@ -55,12 +54,7 @@ export default function RecipesPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>All Recipes</h1>
-        <Link href="/recipes/add" className={styles.addButton}>
-          Add New Recipe
-        </Link>
-      </div>
+      <h1 className={styles.title}>All Recipes</h1>
 
       <form onSubmit={handleSearch} className={styles.searchForm}>
         <input
