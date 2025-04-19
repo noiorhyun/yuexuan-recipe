@@ -11,7 +11,7 @@ const options = {
     info: {
       title: 'Recipe API',
       version: '1.0.0',
-      description: 'API for managing recipes',
+      description: 'API for managing recipes and user authentication',
     },
     servers: [
       {
@@ -21,6 +21,43 @@ const options = {
     ],
     components: {
       schemas: {
+        User: {
+          type: 'object',
+          properties: {
+            _id: {
+              type: 'string'
+            },
+            username: {
+              type: 'string'
+            },
+            email: {
+              type: 'string'
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time'
+            }
+          }
+        },
+        UserInput: {
+          type: 'object',
+          required: ['username', 'email', 'password'],
+          properties: {
+            username: {
+              type: 'string',
+              description: 'Username for the new user'
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email address of the user'
+            },
+            password: {
+              type: 'string',
+              description: 'Password for the user account'
+            }
+          }
+        },
         Recipe: {
           type: 'object',
           properties: {
@@ -93,6 +130,53 @@ const options = {
       }
     },
     paths: {
+      '/api/auth/register': {
+        post: {
+          summary: 'Register a new user',
+          description: 'Creates a new user account with the provided credentials',
+          requestBody: {
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/UserInput'
+                }
+              }
+            }
+          },
+          responses: {
+            201: {
+              description: 'User created successfully',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/User'
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid input or user already exists',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      error: {
+                        type: 'string',
+                        example: 'User with this email or username already exists'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            500: {
+              description: 'Server error'
+            }
+          }
+        }
+      },
       '/api/recipes': {
         get: {
           summary: 'Get all recipes',
@@ -276,7 +360,7 @@ const options = {
       }
     }
   },
-  apis: [] // We're not using file-based API documentation anymore
+  apis: ['./app/api/**/*.js'],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
