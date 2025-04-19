@@ -29,6 +29,42 @@
   background-color: #0051b3;
 }
 
+.searchForm {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  width: 100%;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+}
+
+.searchButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.searchButton:hover {
+  background-color: #0051b3;
+}
+
 .recipeGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -85,7 +121,8 @@
 }
 
 .loading,
-.error {
+.error,
+.noResults {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;
@@ -95,11 +132,20 @@
   color: #c62828;
 }
 
+.noResults {
+  color: #666;
+  grid-column: 1 / -1;
+}
+
 @media (max-width: 600px) {
   .header {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+  }
+
+  .searchForm {
+    flex-direction: column;
   }
 
   .recipeGrid {
