@@ -58,6 +58,20 @@ const options = {
             }
           }
         },
+        LoginInput: {
+          type: 'object',
+          required: ['identifier', 'password'],
+          properties: {
+            identifier: {
+              type: 'string',
+              description: 'Username or email of the user'
+            },
+            password: {
+              type: 'string',
+              description: 'Password for the user account'
+            }
+          }
+        },
         Recipe: {
           type: 'object',
           properties: {
@@ -165,6 +179,53 @@ const options = {
                       error: {
                         type: 'string',
                         example: 'User with this email or username already exists'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            500: {
+              description: 'Server error'
+            }
+          }
+        }
+      },
+      '/api/auth/login': {
+        post: {
+          summary: 'Login user',
+          description: 'Authenticates a user with their credentials',
+          requestBody: {
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/LoginInput'
+                }
+              }
+            }
+          },
+          responses: {
+            200: {
+              description: 'Login successful',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/User'
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid credentials',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      error: {
+                        type: 'string',
+                        example: 'Invalid username/email or password'
                       }
                     }
                   }
