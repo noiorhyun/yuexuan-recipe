@@ -6,13 +6,9 @@
   --button-primary-hover: #383838;
   --button-secondary-hover: #f2f2f2;
 
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-geist-sans);
 }
 
@@ -28,10 +24,45 @@
 }
 
 .main {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.description {
+  font-size: 1.5rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.ctas {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.primary {
+  background-color: #0070f3;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.primary:hover {
+  background-color: #0051b3;
 }
 
 .main ol {
@@ -56,11 +87,6 @@
   font-weight: 600;
 }
 
-.ctas {
-  display: flex;
-  gap: 16px;
-}
-
 .ctas a {
   appearance: none;
   border-radius: 128px;
@@ -79,12 +105,6 @@
   font-size: 16px;
   line-height: 20px;
   font-weight: 500;
-}
-
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
 }
 
 a.secondary {
@@ -110,16 +130,6 @@ a.secondary {
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
   .footer a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;

@@ -1,0 +1,88 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.recipeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.recipeCard {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.recipeCard:hover {
+  transform: translateY(-5px);
+}
+
+.recipeName {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.recipeDetails {
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.recipeContent {
+  margin-top: 1rem;
+}
+
+.recipeContent h3 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin: 1rem 0;
+}
+
+.ingredientsList {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.ingredientsList li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.instructionsList {
+  padding-left: 1rem;
+}
+
+.instructionsList li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  padding: 2rem;
+}
+
+.error {
+  text-align: center;
+  color: #e74c3c;
+  padding: 2rem;
+  font-size: 1.2rem;
+} 
