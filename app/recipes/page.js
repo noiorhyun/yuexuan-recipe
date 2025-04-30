@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 export default function RecipesPage() {
@@ -75,29 +76,36 @@ export default function RecipesPage() {
             {isSearching ? 'No recipes found matching your search.' : 'No recipes available.'}
           </div>
         ) : (
-          recipes.map((recipe) => (
-            <div key={recipe._id} className={styles.recipeCard}>
-              <h2 className={styles.recipeName}>{recipe.name}</h2>
-              <div className={styles.recipeDetails}>
-                <p><strong>Cooking Time:</strong> {recipe.cookingTime} minutes</p>
-                <p><strong>Servings:</strong> {recipe.servings}</p>
-              </div>
-              <div className={styles.recipeContent}>
-                <h3>Ingredients</h3>
-                <ul className={styles.ingredientsList}>
-                  {recipe.ingredients.map((ingredient, index) => (
-                    <li key={index}>{ingredient}</li>
-                  ))}
-                </ul>
-                <h3>Instructions</h3>
-                <ol className={styles.instructionsList}>
-                  {recipe.instructions.map((instruction, index) => (
-                    <li key={index}>{instruction}</li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          ))
+          recipes.map((recipe) => {
+            // Calculate average review score
+            const averageReview = recipe.reviews && recipe.reviews.length > 0
+              ? (recipe.reviews.reduce((sum, rating) => sum + rating, 0) / recipe.reviews.length).toFixed(1)
+              : null;
+            const reviewCount = recipe.reviews ? recipe.reviews.length : 0;
+
+            return (
+              <Link key={recipe._id} href={`/recipes/${recipe._id}`} className={styles.cardLink}>
+                <div className={styles.recipeCard}>
+                  {recipe.imageUrl && (
+                    <img src={recipe.imageUrl} alt={recipe.name} className={styles.recipeImage} />
+                  )}
+                  <div className={styles.cardContent}>
+                    <h2 className={styles.recipeName}>{recipe.name}</h2>
+                    <div className={styles.recipeDetails}>
+                      {reviewCount > 0 ? (
+                        <p>
+                          <strong>Rating:</strong> {averageReview} / 5 
+                          <span className={styles.reviewCount}>({reviewCount} reviews)</span>
+                        </p>
+                      ) : (
+                        <p>No reviews yet</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })
         )}
       </div>
     </div>

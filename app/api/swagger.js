@@ -74,38 +74,67 @@ const options = {
         },
         Recipe: {
           type: 'object',
+          required: ['name', 'ingredients', 'instructions', 'cookingTime', 'servings'],
           properties: {
             _id: {
-              type: 'string'
+              type: 'string',
+              description: 'The auto-generated ID of the recipe'
             },
             name: {
-              type: 'string'
+              type: 'string',
+              description: 'The name of the recipe'
             },
             ingredients: {
               type: 'array',
               items: {
                 type: 'string'
-              }
+              },
+              description: 'List of ingredients needed for the recipe'
             },
             instructions: {
               type: 'array',
               items: {
                 type: 'string'
-              }
+              },
+              description: 'Step-by-step cooking instructions'
             },
             cookingTime: {
-              type: 'integer'
+              type: 'integer',
+              description: 'Cooking time in minutes'
             },
             servings: {
-              type: 'integer'
+              type: 'integer',
+              description: 'Number of servings the recipe makes'
+            },
+            category: {
+              type: 'array',
+              items: {
+                type: 'string'
+              },
+              description: 'List of categories for the recipe (e.g., ["Dinner", "Thai", "Spicy"])'
+            },
+            imageUrl: {
+              type: 'string',
+              description: 'URL to the recipe\'s image'
+            },
+            reviews: {
+              type: 'array',
+              items: {
+                type: 'integer',
+                minimum: 1,
+                maximum: 5
+              },
+              description: 'Array of review ratings (1-5)'
             },
             createdAt: {
               type: 'string',
-              format: 'date-time'
+              format: 'date-time',
+              description: 'Timestamp when the recipe was created'
             },
             updatedAt: {
               type: 'string',
-              format: 'date-time'
+              format: 'date-time',
+              description: 'Timestamp when the recipe was last updated'
             }
           }
         },

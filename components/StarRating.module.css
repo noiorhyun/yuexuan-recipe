@@ -1,0 +1,41 @@
+.starRatingContainer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.starRatingContainer h4 {
+  margin: 0 0 0.75rem;
+  color: #444;
+  font-weight: 600;
+}
+
+.starsWrapper {
+  display: inline-block;
+}
+
+.star {
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+  margin: 0 0.2rem;
+}
+
+.star.filled {
+  color: #facc15; /* Tailwind yellow-400 */
+}
+
+.star.empty {
+  color: #ccc;
+}
+
+.submitMessage {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #059669; /* Tailwind green-600 for success */
+  min-height: 1.2em; /* Reserve space */
+}
+
+/* Add style for error messages if needed */
+/* .submitMessage.error { color: #dc2626; } */ 

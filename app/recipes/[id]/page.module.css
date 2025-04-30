@@ -1,0 +1,137 @@
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.loading,
+.errorContainer {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.error {
+  color: #c62828;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #0070f3;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.recipeName {
+  margin: 0 0 1rem;
+  color: #222;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.recipeImage {
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.metaInfo {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem; /* Row gap, Column gap */
+  justify-content: center;
+  color: #555;
+}
+
+.metaInfo p,
+.metaInfo div {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.categoryTag {
+  background-color: #eef2f7;
+  color: #334155;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.contentColumns {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Adjust column ratio as needed */
+  gap: 3rem;
+}
+
+.ingredientsSection h2,
+.instructionsSection h2 {
+  margin: 0 0 1rem;
+  color: #333;
+  font-size: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #0070f3;
+}
+
+.ingredientsList,
+.instructionsList {
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.ingredientsList li {
+  margin-bottom: 0.75rem;
+  list-style: disc;
+  color: #444;
+}
+
+.instructionsList li {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+.ratingError {
+  color: #dc2626; /* Tailwind red-600 */
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  min-height: 1.2em; /* Reserve space */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentColumns {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .recipeName {
+    font-size: 1.8rem;
+  }
+
+  .metaInfo {
+    justify-content: flex-start;
+  }
+} 
