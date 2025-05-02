@@ -11,10 +11,11 @@ export default function RecipesPage() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [sortOption, setSortOption] = useState('default');
   const searchParams = useSearchParams(); 
   const queryFromUrl = searchParams.get('q') || '';
 
-  console.log('[RecipesPage] Rendered. queryFromUrl:', queryFromUrl);
+  console.log('[RecipesPage] Rendered. queryFromUrl:', queryFromUrl, 'sortOption:', sortOption);
 
   const fetchRecipes = async (query = '') => {
     try {
@@ -74,6 +75,38 @@ export default function RecipesPage() {
     }
   };
 
+  const getSortedRecipes = () => {
+    if (!recipes) return [];
+    
+    const sortableRecipes = [...recipes];
+
+    switch (sortOption) {
+      case 'rating':
+        sortableRecipes.sort((a, b) => {
+          const avgA = a.reviews && a.reviews.length > 0 ? a.reviews.reduce((s, r) => s + r, 0) / a.reviews.length : 0;
+          const avgB = b.reviews && b.reviews.length > 0 ? b.reviews.reduce((s, r) => s + r, 0) / b.reviews.length : 0;
+          return avgB - avgA;
+        });
+        break;
+      case 'reviews':
+        sortableRecipes.sort((a, b) => {
+          const countA = a.reviews ? a.reviews.length : 0;
+          const countB = b.reviews ? b.reviews.length : 0;
+          return countB - countA;
+        });
+        break;
+      case 'cookingTime':
+        sortableRecipes.sort((a, b) => a.cookingTime - b.cookingTime);
+        break;
+      case 'default':
+      default:
+        break;
+    }
+    return sortableRecipes;
+  };
+
+  const sortedRecipes = getSortedRecipes();
+
   if (loading && !isSearching) {
     return <div className={styles.loading}>Loading recipes...</div>;
   }
@@ -84,21 +117,37 @@ export default function RecipesPage() {
 
   return (
     <div className={styles.container}>
-      {/* Display search term if present */}
       {queryFromUrl ? (
         <h1 className={styles.title}>Search Results for "{queryFromUrl}"</h1>
       ) : (
         <h1 className={styles.title}>All Recipes</h1>
       )}
 
+      <div className={styles.sortContainer}>
+        <label htmlFor="sort-select">Sort by: </label>
+        <select 
+          id="sort-select"
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          className={styles.sortSelect}
+        >
+          <option value="default">Default</option>
+          <option value="rating">Rating (High to Low)</option>
+          <option value="reviews">Reviews (Most to Fewest)</option>
+          <option value="cookingTime">Cooking Time (Shortest)</option>
+        </select>
+      </div>
+      
       <div className={styles.recipeGrid}>
-        {recipes.length === 0 ? (
+        {sortedRecipes.length === 0 ? (
           <div className={styles.noResults}>
-            {isSearching ? 'No recipes found matching your search.' : 'No recipes available.'}
+            {queryFromUrl 
+              ? `No recipes found matching "${queryFromUrl}".` 
+              : 'No recipes available.'
+            }
           </div>
         ) : (
-          recipes.map((recipe) => {
-            // Calculate average review score
+          sortedRecipes.map((recipe) => {
             const averageReview = recipe.reviews && recipe.reviews.length > 0
               ? (recipe.reviews.reduce((sum, rating) => sum + rating, 0) / recipe.reviews.length).toFixed(1)
               : null;
