@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { useSearchParams } from 'next/navigation';
 
 export default function RecipesPage() {
   const [recipes, setRecipes] = useState([]);
@@ -10,6 +11,10 @@ export default function RecipesPage() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const searchParams = useSearchParams(); 
+  const queryFromUrl = searchParams.get('q') || '';
+
+  console.log('[RecipesPage] Rendered. queryFromUrl:', queryFromUrl);
 
   const fetchRecipes = async (query = '') => {
     try {
@@ -32,8 +37,32 @@ export default function RecipesPage() {
   };
 
   useEffect(() => {
+    console.log('[RecipesPage] useEffect triggered. queryFromUrl:', queryFromUrl);
+    
+    const fetchRecipes = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const url = queryFromUrl
+          ? `/api/recipes?q=${encodeURIComponent(queryFromUrl)}`
+          : '/api/recipes';
+        console.log('[RecipesPage] Fetching URL:', url);
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch recipes');
+        }
+        const data = await response.json();
+        setRecipes(data.recipes || []);
+      } catch (err) {
+        setError(err.message);
+        setRecipes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchRecipes();
-  }, []);
+  }, [queryFromUrl]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -55,21 +84,13 @@ export default function RecipesPage() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>All Recipes</h1>
+      {/* Display search term if present */}
+      {queryFromUrl ? (
+        <h1 className={styles.title}>Search Results for "{queryFromUrl}"</h1>
+      ) : (
+        <h1 className={styles.title}>All Recipes</h1>
+      )}
 
-      <form onSubmit={handleSearch} className={styles.searchForm}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search recipes..."
-          className={styles.searchInput}
-        />
-        <button type="submit" className={styles.searchButton}>
-          Search
-        </button>
-      </form>
-      
       <div className={styles.recipeGrid}>
         {recipes.length === 0 ? (
           <div className={styles.noResults}>

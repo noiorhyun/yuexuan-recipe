@@ -1,11 +1,28 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      const targetUrl = `/recipes?q=${encodeURIComponent(trimmedQuery)}`;
+      console.log('[Navbar] Navigating to:', targetUrl);
+      router.push(targetUrl);
+      setSearchQuery('');
+    } else {
+      console.log('[Navbar] Navigating to: /recipes (empty search)');
+      router.push('/recipes');
+    }
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -38,6 +55,18 @@ export default function Navbar() {
           Add Recipe
         </Link>
       </div>
+      <form onSubmit={handleSearch} className={styles.searchForm}>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search recipes..."
+          className={styles.searchInput}
+        />
+        <button type="submit" className={styles.searchButton}>
+          Search
+        </button>
+      </form>
     </nav>
   );
 } 
