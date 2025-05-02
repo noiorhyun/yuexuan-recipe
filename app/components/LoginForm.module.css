@@ -37,27 +37,69 @@
   box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
 }
 
-.submitButton {
-  width: 100%;
+/* Renaming submitButton to loginButton for clarity */
+.loginButton {
+  /* width: 100%; - Removed if using button container */
   padding: 0.75rem;
   background-color: #0070f3;
   color: white;
-  border: none;
+  border: 1px solid #0070f3;
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.submitButton:hover {
+.loginButton:hover {
   background-color: #0051b3;
+  border-color: #0051b3;
+}
+
+/* Container for buttons */
+.buttonContainer {
+  display: flex;
+  gap: 1rem; /* Space between buttons */
+  margin-top: 1.5rem;
+}
+
+.loginButton,
+.registerButton { /* Apply common styles */
+  flex: 1; /* Make buttons share space */
+  /* Remove redundant styles if defined above */
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+/* Style for the secondary register button */
+.registerButton {
+  background-color: white;
+  color: #0070f3;
+  border: 1px solid #0070f3;
+}
+
+.registerButton:hover {
+  background-color: #e6f7ff; /* Light blue background */
+  border-color: #0051b3;
+  color: #0051b3;
+}
+
+.error,
+.success { /* Common message styles */
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  text-align: center;
 }
 
 .error {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
   background-color: #ffebee;
   color: #c62828;
-  border-radius: 4px;
-  text-align: center;
+}
+
+.success {
+  background-color: #e6f9f0; /* Light green */
+  color: #059669; /* Darker green */
 } 
