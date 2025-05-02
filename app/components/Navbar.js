@@ -26,6 +26,12 @@ export default function Navbar() {
           Recipes
         </Link>
         <Link 
+          href="/categories" 
+          className={`${styles.link} ${pathname === '/categories' ? styles.active : ''}`}
+        >
+          Categories
+        </Link>
+        <Link 
           href="/recipes/add" 
           className={`${styles.link} ${pathname === '/recipes/add' ? styles.active : ''}`}
         >

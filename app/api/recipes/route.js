@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '../../../lib/mongodb';
 
 /**
@@ -39,8 +39,21 @@ import clientPromise from '../../../lib/mongodb';
  * @swagger
  * /api/recipes:
  *   get:
- *     summary: Get all recipes
- *     description: Returns a list of all recipes
+ *     summary: Get recipes
+ *     description: Returns a list of recipes, optionally filtered by category or search query.
+ *     parameters:
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter recipes by a specific category (case-insensitive).
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Search recipes by name or ingredients.
  *     responses:
  *       200:
  *         description: A list of recipes
@@ -76,14 +89,34 @@ import clientPromise from '../../../lib/mongodb';
  *       500:
  *         description: Server error
  */
-export async function GET() {
+export async function GET(request) {
   try {
     const client = await clientPromise;
     const db = client.db('recipe_db');
-    const recipes = await db.collection('recipes').find({}).toArray();
+    
+    const searchParams = request.nextUrl.searchParams;
+    const category = searchParams.get('category');
+    const searchQuery = searchParams.get('q');
+
+    let query = {};
+
+    if (category) {
+      query.category = { $regex: new RegExp(`^${category}$`, 'i') };
+    }
+
+    if (searchQuery) {
+      query.$or = [
+        { name: { $regex: searchQuery, $options: 'i' } },
+        { ingredients: { $regex: searchQuery, $options: 'i' } }
+      ];
+    }
+    
+    console.log("Executing recipe query:", query);
+    const recipes = await db.collection('recipes').find(query).toArray();
     
     return NextResponse.json({ recipes });
   } catch (error) {
+    console.error("Error fetching recipes:", error);
     return NextResponse.json(
       { error: 'Failed to fetch recipes' },
       { status: 500 }
