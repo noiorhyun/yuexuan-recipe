@@ -35,6 +35,12 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.formGroup input:last-child,
+.formGroup textarea:last-child {
+  margin-bottom: 0;
 }
 
 .formGroup textarea {

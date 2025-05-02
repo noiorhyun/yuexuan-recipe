@@ -1,5 +1,6 @@
 import './globals.css';
 import Navbar from './components/Navbar';
+import FloatingAddButton from './components/FloatingAddButton';
 
 export const metadata = {
   title: 'RecipeNest',
@@ -11,7 +12,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Navbar />
-        {children}
+        <main>{children}</main>
+        <FloatingAddButton />
       </body>
     </html>
   );

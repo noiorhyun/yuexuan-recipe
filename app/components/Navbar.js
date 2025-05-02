@@ -48,12 +48,6 @@ export default function Navbar() {
         >
           Categories
         </Link>
-        <Link 
-          href="/recipes/add" 
-          className={`${styles.link} ${pathname === '/recipes/add' ? styles.active : ''}`}
-        >
-          Add Recipe
-        </Link>
       </div>
       <form onSubmit={handleSearch} className={styles.searchForm}>
         <input

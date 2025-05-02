@@ -10,7 +10,9 @@ export default function AddRecipe() {
     ingredients: [''],
     instructions: [''],
     cookingTime: '',
-    servings: ''
+    servings: '',
+    category: '',
+    imageUrl: ''
   });
   const [error, setError] = useState('');
   const router = useRouter();
@@ -52,21 +54,32 @@ export default function AddRecipe() {
     e.preventDefault();
     setError('');
 
+    const recipeData = {
+      ...recipe,
+      cookingTime: parseInt(recipe.cookingTime, 10) || 0,
+      servings: parseInt(recipe.servings, 10) || 0,
+      ingredients: recipe.ingredients.filter(item => item.trim() !== ''),
+      instructions: recipe.instructions.filter(item => item.trim() !== ''),
+      category: recipe.category.split(',').map(cat => cat.trim()).filter(cat => cat !== '')
+    };
+
+    if (!recipeData.name || recipeData.ingredients.length === 0 || recipeData.instructions.length === 0 || !recipeData.cookingTime || !recipeData.servings) {
+      setError('Please fill in all required fields (Name, Ingredients, Instructions, Cooking Time, Servings).');
+      return;
+    }
+
     try {
       const response = await fetch('/api/recipes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...recipe,
-          ingredients: recipe.ingredients.filter(item => item.trim() !== ''),
-          instructions: recipe.instructions.filter(item => item.trim() !== '')
-        }),
+        body: JSON.stringify(recipeData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add recipe');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add recipe');
       }
 
       router.push('/recipes');
@@ -90,6 +103,30 @@ export default function AddRecipe() {
             value={recipe.name}
             onChange={handleInputChange}
             required
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="imageUrl">Image URL (Optional)</label>
+          <input
+            type="url"
+            id="imageUrl"
+            name="imageUrl"
+            value={recipe.imageUrl}
+            onChange={handleInputChange}
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="category">Categories (Optional, comma-separated)</label>
+          <input
+            type="text"
+            id="category"
+            name="category"
+            value={recipe.category}
+            onChange={handleInputChange}
+            placeholder="e.g., Dinner, Quick, Chinese"
           />
         </div>
 

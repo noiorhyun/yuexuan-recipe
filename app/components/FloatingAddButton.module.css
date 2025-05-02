@@ -1,0 +1,28 @@
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  background-color: #6CBB3C; /* Use theme color */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  z-index: 1000; /* Ensure it's above other content */
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.fab:hover {
+  background-color: #589e31; /* Darker theme color */
+  transform: scale(1.05); /* Slight grow effect */
+}
+
+.icon {
+  font-size: 2rem;
+  line-height: 1; /* Adjust for vertical centering */
+  font-weight: 300;
+} 

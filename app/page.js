@@ -13,11 +13,6 @@ export default function Home() {
         </div>
         
         <div className={styles.content}>
-          <div className={styles.ctas}>
-            <Link href="/recipes" className={styles.primary}>
-              View All Recipes
-            </Link>
-          </div>
           
           <div className={styles.loginSection}>
             <LoginForm />
