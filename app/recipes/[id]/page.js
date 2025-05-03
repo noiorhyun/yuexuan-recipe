@@ -6,6 +6,25 @@ import Link from 'next/link';
 import StarRating from '../../../components/StarRating';
 import styles from './page.module.css';
 
+// Helper function to get YouTube embed URL
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+  let videoId = null;
+  try {
+    const urlObj = new URL(url);
+    if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
+      videoId = urlObj.searchParams.get('v');
+    } else if (urlObj.hostname === 'youtu.be') {
+      videoId = urlObj.pathname.substring(1);
+    }
+  } catch (error) {
+    console.error("Error parsing video URL:", error);
+    return null; // Not a valid URL or doesn't match expected formats
+  }
+  
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+}
+
 export default function RecipeDetailPage() {
   const params = useParams();
   const { id } = params;
@@ -98,15 +117,31 @@ export default function RecipeDetailPage() {
     : null;
   const reviewCount = recipe.reviews ? recipe.reviews.length : 0;
 
+  // Determine YouTube embed URL
+  const videoEmbedUrl = getYouTubeEmbedUrl(recipe.videoUrl);
+
   return (
     <div className={styles.container}>
       <Link href="/recipes" className={styles.backLink}>&larr; Back to Recipes</Link>
       
       <h1 className={styles.recipeName}>{recipe.name}</h1>
       
-      {recipe.imageUrl && (
+      {/* Conditionally render Video or Image */}
+      {videoEmbedUrl ? (
+        <div className={styles.videoContainer}>
+          <iframe 
+            className={styles.videoEmbed}
+            src={videoEmbedUrl}
+            title={`${recipe.name} Video`}
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      ) : recipe.imageUrl ? (
         <img src={recipe.imageUrl} alt={recipe.name} className={styles.recipeImage} />
-      )}
+      ) : null} 
+      {/* If neither video nor image exists, nothing is rendered here */}
 
       <div className={styles.metaInfo}>
         {recipe.category && recipe.category.length > 0 && (

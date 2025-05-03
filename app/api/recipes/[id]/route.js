@@ -52,6 +52,9 @@ import clientPromise from '../../../../lib/mongodb';
  *             minimum: 1
  *             maximum: 5
  *           description: Array of review ratings (1-5)
+ *         videoUrl:
+ *           type: string
+ *           description: URL to an optional recipe video (e.g., YouTube link)
  *         createdAt:
  *           type: string
  *           format: date-time

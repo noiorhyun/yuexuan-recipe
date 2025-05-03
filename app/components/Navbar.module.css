@@ -4,7 +4,7 @@
   align-items: center;
   padding: 1rem 2rem;
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */ /* Temporarily commented out */
 }
 
 .logo a {
@@ -41,6 +41,8 @@
   color: #6CBB3C;
 }
 
+/* Temporarily comment out the active link underline */
+/*
 .link.active::after {
   content: '';
   position: absolute;
@@ -50,6 +52,7 @@
   height: 2px;
   background-color: #6CBB3C;
 }
+*/
 
 /* Styles for the search form in the navbar */
 .searchForm {

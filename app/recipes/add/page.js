@@ -12,7 +12,8 @@ export default function AddRecipe() {
     cookingTime: '',
     servings: '',
     category: '',
-    imageUrl: ''
+    imageUrl: '',
+    videoUrl: ''
   });
   const [error, setError] = useState('');
   const router = useRouter();
@@ -115,6 +116,18 @@ export default function AddRecipe() {
             value={recipe.imageUrl}
             onChange={handleInputChange}
             placeholder="https://example.com/image.jpg"
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="videoUrl">Video URL (Optional)</label>
+          <input
+            type="url"
+            id="videoUrl"
+            name="videoUrl"
+            value={recipe.videoUrl}
+            onChange={handleInputChange}
+            placeholder="https://www.youtube.com/watch?v=..."
           />
         </div>
 

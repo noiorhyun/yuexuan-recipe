@@ -47,6 +47,27 @@
   margin-bottom: 2rem;
 }
 
+/* Styles for Video Embed */
+.videoContainer {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: #000; /* Black background while loading */
+  margin-bottom: 2rem;
+  border-radius: 8px; /* Match image radius */
+}
+
+.videoEmbed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .metaInfo {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
