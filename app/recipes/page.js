@@ -118,7 +118,7 @@ export default function RecipesPage() {
   return (
     <div className={styles.container}>
       {queryFromUrl ? (
-        <h1 className={styles.title}>Search Results for "{queryFromUrl}"</h1>
+        <h1 className={styles.title}>Search Results for &quot;{queryFromUrl}&quot;</h1>
       ) : (
         <h1 className={styles.title}>All Recipes</h1>
       )}
@@ -142,7 +142,7 @@ export default function RecipesPage() {
         {sortedRecipes.length === 0 ? (
           <div className={styles.noResults}>
             {queryFromUrl 
-              ? `No recipes found matching "${queryFromUrl}".` 
+              ? `No recipes found matching &quot;${queryFromUrl}&quot;.`
               : 'No recipes available.'
             }
           </div>
