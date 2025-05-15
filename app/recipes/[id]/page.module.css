@@ -276,9 +276,17 @@
   margin-bottom: 0.5rem;
 }
 
+.reviewMeta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .reviewAuthor {
-  font-weight: 500;
+  font-weight: 600;
   color: #1e293b;
+  font-size: 1.1rem;
 }
 
 .reviewDate {
@@ -415,12 +423,6 @@
 .ratingLabel {
   font-weight: 500;
   color: #374151;
-}
-
-.reviewMeta {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 
 .reviewRating {

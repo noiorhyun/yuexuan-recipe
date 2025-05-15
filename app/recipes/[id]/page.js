@@ -389,6 +389,9 @@ export default function RecipeDetailPage() {
                 <div key={index} className={styles.reviewItem}>
                   <div className={styles.reviewHeader}>
                     <div className={styles.reviewMeta}>
+                      <span className={styles.reviewAuthor}>
+                        {review.username || 'Anonymous'}
+                      </span>
                       <span className={styles.reviewDate}>
                         {new Date(review.date).toLocaleDateString()}
                       </span>

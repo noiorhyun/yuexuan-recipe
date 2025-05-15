@@ -1,11 +1,23 @@
 import { NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
+import { cookies } from 'next/headers';
 import clientPromise from '../../../../../lib/mongodb';
 
 export async function POST(request, { params }) {
   try {
     const { id } = params;
     const { comment, imageUrl, rating } = await request.json();
+
+    // Get the session cookie
+    const cookieStore = cookies();
+    const session = cookieStore.get('session');
+
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
 
     if (!comment || typeof comment !== 'string' || comment.trim().length === 0) {
       return NextResponse.json(
@@ -24,12 +36,25 @@ export async function POST(request, { params }) {
     const client = await clientPromise;
     const db = client.db('recipe_db');
 
-    // Create the review object
+    // Get the user's username
+    const user = await db.collection('users').findOne({
+      _id: new ObjectId(session.value)
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Create the review object with username
     const review = {
       comment: comment.trim(),
       date: new Date(),
       imageUrl: imageUrl || null,
-      rating: rating
+      rating: rating,
+      username: user.username
     };
 
     // Update the recipe with the new review
