@@ -33,6 +33,9 @@ export default function RecipeDetailPage() {
   const [error, setError] = useState(null);
   const [ratingError, setRatingError] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [newReview, setNewReview] = useState('');
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [reviewError, setReviewError] = useState('');
 
   useEffect(() => {
     if (!id) return;
@@ -111,6 +114,38 @@ export default function RecipeDetailPage() {
     } catch (err) {
       setError(err.message);
       setIsDeleting(false);
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!newReview.trim()) return;
+
+    setIsSubmittingReview(true);
+    setReviewError('');
+
+    try {
+      const response = await fetch(`/api/recipes/${id}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ comment: newReview.trim() }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit review');
+      }
+
+      const updatedRecipe = await response.json();
+      setRecipe(updatedRecipe);
+      setNewReview('');
+      setReviewError('');
+    } catch (err) {
+      setReviewError(err.message);
+    } finally {
+      setIsSubmittingReview(false);
     }
   };
 
@@ -223,6 +258,51 @@ export default function RecipeDetailPage() {
               <li key={index}>{instruction}</li>
             ))}
           </ol>
+        </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className={styles.reviewsSection}>
+        <h2>Reviews</h2>
+        
+        {/* Review Form */}
+        <form onSubmit={handleReviewSubmit} className={styles.reviewForm}>
+          <textarea
+            value={newReview}
+            onChange={(e) => setNewReview(e.target.value)}
+            placeholder="Share your experience with this recipe..."
+            className={styles.reviewInput}
+            required
+          />
+          {reviewError && <p className={styles.reviewError}>{reviewError}</p>}
+          <button
+            type="submit"
+            className={styles.submitReviewButton}
+            disabled={isSubmittingReview || !newReview.trim()}
+          >
+            {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
+          </button>
+        </form>
+
+        {/* Reviews List */}
+        <div className={styles.reviewsList}>
+          {recipe.reviews && recipe.reviews.length > 0 ? (
+            recipe.reviews
+              .filter(review => review.comment && review.comment.trim().length > 0)
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .map((review, index) => (
+                <div key={index} className={styles.reviewItem}>
+                  <div className={styles.reviewHeader}>
+                    <span className={styles.reviewDate}>
+                      {new Date(review.date).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <p className={styles.reviewComment}>{review.comment}</p>
+                </div>
+              ))
+          ) : (
+            <p className={styles.noReviews}>No reviews yet. Be the first to share your experience!</p>
+          )}
         </div>
       </div>
     </div>
