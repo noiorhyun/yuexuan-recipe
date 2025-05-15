@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
+import { FaUserCircle } from 'react-icons/fa';
 import styles from './Navigation.module.css';
 
 export default function Navigation() {
@@ -61,8 +62,9 @@ export default function Navigation() {
           <button
             className={styles.profileButton}
             onClick={() => setIsProfileOpen(!isProfileOpen)}
+            aria-label="Profile menu"
           >
-            Profile
+            <FaUserCircle className={styles.profileIcon} />
           </button>
           {isProfileOpen && (
             <div className={styles.dropdown}>
