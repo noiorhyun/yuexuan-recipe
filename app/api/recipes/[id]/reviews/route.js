@@ -5,11 +5,18 @@ import clientPromise from '../../../../../lib/mongodb';
 export async function POST(request, { params }) {
   try {
     const { id } = params;
-    const { comment, imageUrl } = await request.json();
+    const { comment, imageUrl, rating } = await request.json();
 
     if (!comment || typeof comment !== 'string' || comment.trim().length === 0) {
       return NextResponse.json(
         { error: 'Comment is required and must be a non-empty string' },
+        { status: 400 }
+      );
+    }
+
+    if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
+      return NextResponse.json(
+        { error: 'Rating is required and must be a number between 1 and 5' },
         { status: 400 }
       );
     }
@@ -21,7 +28,8 @@ export async function POST(request, { params }) {
     const review = {
       comment: comment.trim(),
       date: new Date(),
-      imageUrl: imageUrl || null
+      imageUrl: imageUrl || null,
+      rating: rating
     };
 
     // Update the recipe with the new review

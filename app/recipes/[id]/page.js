@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import StarRating from '../../../components/StarRating';
 import styles from './page.module.css';
 
 // Helper function to get YouTube embed URL
@@ -31,7 +30,6 @@ export default function RecipeDetailPage() {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [ratingError, setRatingError] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [newReview, setNewReview] = useState('');
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
@@ -40,6 +38,7 @@ export default function RecipeDetailPage() {
   const [imagePreview, setImagePreview] = useState(null);
   const [isDeletingReview, setIsDeletingReview] = useState(false);
   const [deleteError, setDeleteError] = useState('');
+  const [reviewRating, setReviewRating] = useState(0);
 
   useEffect(() => {
     if (!id) return;
@@ -67,36 +66,6 @@ export default function RecipeDetailPage() {
 
     fetchRecipe();
   }, [id]);
-
-  const handleRatingSubmit = async (newRating) => {
-    if (!id || !recipe) return false;
-    setRatingError('');
-
-    try {
-      const response = await fetch(`/api/recipes/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ newRating: newRating }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'API Error');
-      }
-
-      const updatedRecipe = await response.json();
-      setRecipe(updatedRecipe);
-      setRatingError('');
-      return true;
-
-    } catch (err) {
-      console.error("Rating submission failed:", err);
-      setRatingError(err.message || 'Could not submit rating.');
-      return false;
-    }
-  };
 
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this recipe?')) {
@@ -139,7 +108,10 @@ export default function RecipeDetailPage() {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    if (!newReview.trim()) return;
+    if (!newReview.trim() || reviewRating === 0) {
+      setReviewError('Please provide both a comment and a rating');
+      return;
+    }
 
     setIsSubmittingReview(true);
     setReviewError('');
@@ -164,7 +136,7 @@ export default function RecipeDetailPage() {
         imageUrl = uploadData.url;
       }
 
-      // Then submit the review with the image URL
+      // Then submit the review with the image URL and rating
       const response = await fetch(`/api/recipes/${id}/reviews`, {
         method: 'POST',
         headers: {
@@ -172,7 +144,8 @@ export default function RecipeDetailPage() {
         },
         body: JSON.stringify({ 
           comment: newReview.trim(),
-          imageUrl 
+          imageUrl,
+          rating: reviewRating
         }),
       });
 
@@ -186,6 +159,7 @@ export default function RecipeDetailPage() {
       setNewReview('');
       setSelectedImage(null);
       setImagePreview(null);
+      setReviewRating(0);
       setReviewError('');
     } catch (err) {
       setReviewError(err.message);
@@ -314,35 +288,28 @@ export default function RecipeDetailPage() {
         </div>
       </div>
 
-      <StarRating recipeId={id} onRatingSubmit={handleRatingSubmit} />
-      {ratingError && <p className={styles.ratingError}>{ratingError}</p>}
-
-      <div className={styles.contentColumns}>
-        <div className={styles.ingredientsSection}>
-          <h2>Ingredients</h2>
-          <ul className={styles.ingredientsList}>
-            {recipe.ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={styles.instructionsSection}>
-          <h2>Instructions</h2>
-          <ol className={styles.instructionsList}>
-            {recipe.instructions.map((instruction, index) => (
-              <li key={index}>{instruction}</li>
-            ))}
-          </ol>
-        </div>
-      </div>
-
       {/* Reviews Section */}
       <div className={styles.reviewsSection}>
         <h2>Reviews</h2>
         
         {/* Review Form */}
         <form onSubmit={handleReviewSubmit} className={styles.reviewForm}>
+          <div className={styles.ratingSection}>
+            <label className={styles.ratingLabel}>Rate this recipe:</label>
+            <div className={styles.starRating}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setReviewRating(star)}
+                  className={styles.starButton}
+                >
+                  {star <= reviewRating ? '★' : '☆'}
+                </button>
+              ))}
+            </div>
+          </div>
+          
           <textarea
             value={newReview}
             onChange={(e) => setNewReview(e.target.value)}
@@ -383,7 +350,7 @@ export default function RecipeDetailPage() {
           <button
             type="submit"
             className={styles.submitReviewButton}
-            disabled={isSubmittingReview || !newReview.trim()}
+            disabled={isSubmittingReview || !newReview.trim() || reviewRating === 0}
           >
             {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
           </button>
@@ -398,9 +365,17 @@ export default function RecipeDetailPage() {
               .map((review, index) => (
                 <div key={index} className={styles.reviewItem}>
                   <div className={styles.reviewHeader}>
-                    <span className={styles.reviewDate}>
-                      {new Date(review.date).toLocaleDateString()}
-                    </span>
+                    <div className={styles.reviewMeta}>
+                      <span className={styles.reviewDate}>
+                        {new Date(review.date).toLocaleDateString()}
+                      </span>
+                      {review.rating && (
+                        <div className={styles.reviewRating}>
+                          {'★'.repeat(review.rating)}
+                          {'☆'.repeat(5 - review.rating)}
+                        </div>
+                      )}
+                    </div>
                     <button
                       onClick={() => handleDeleteReview(index)}
                       className={styles.deleteReviewButton}

@@ -267,7 +267,7 @@
 .reviewHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 0.5rem;
 }
 
@@ -398,4 +398,47 @@
 .deleteReviewButton:disabled {
   background-color: #ffcccc;
   cursor: not-allowed;
+}
+
+.ratingSection {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ratingLabel {
+  font-weight: 500;
+  color: #374151;
+}
+
+.reviewMeta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.reviewRating {
+  color: #f59e0b;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.starRating {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.starButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #f59e0b;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s ease;
+}
+
+.starButton:hover {
+  transform: scale(1.1);
 } 
