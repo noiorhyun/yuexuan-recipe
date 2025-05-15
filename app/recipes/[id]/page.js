@@ -32,6 +32,7 @@ export default function RecipeDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [ratingError, setRatingError] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -90,6 +91,29 @@ export default function RecipeDetailPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this recipe?')) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/recipes/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete recipe');
+      }
+
+      // Redirect to recipes page after successful deletion
+      window.location.href = '/recipes';
+    } catch (err) {
+      setError(err.message);
+      setIsDeleting(false);
+    }
+  };
+
   if (loading) {
     return <div className={styles.loading}>Loading recipe details...</div>;
   }
@@ -122,7 +146,21 @@ export default function RecipeDetailPage() {
 
   return (
     <div className={styles.container}>
-      <Link href="/recipes" className={styles.backLink}>&larr; Back to Recipes</Link>
+      <div className={styles.headerActions}>
+        <Link href="/recipes" className={styles.backLink}>&larr; Back to Recipes</Link>
+        <div className={styles.actionButtons}>
+          <Link href={`/recipes/edit/${id}`} className={styles.editButton}>
+            Edit Recipe
+          </Link>
+          <button 
+            onClick={handleDelete} 
+            className={styles.deleteButton}
+            disabled={isDeleting}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete Recipe'}
+          </button>
+        </div>
+      </div>
       
       <h1 className={styles.recipeName}>{recipe.name}</h1>
       
