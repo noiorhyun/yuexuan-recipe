@@ -40,6 +40,7 @@ export default function RecipeDetailPage() {
   const [isDeletingReview, setIsDeletingReview] = useState(false);
   const [deleteError, setDeleteError] = useState('');
   const [reviewRating, setReviewRating] = useState(0);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     if (!id) return;
@@ -67,6 +68,23 @@ export default function RecipeDetailPage() {
 
     fetchRecipe();
   }, [id]);
+
+  useEffect(() => {
+    // Fetch current user info
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch('/api/auth/profile');
+        if (response.ok) {
+          const userData = await response.json();
+          setCurrentUser(userData);
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this recipe?')) {
@@ -402,13 +420,15 @@ export default function RecipeDetailPage() {
                         </div>
                       )}
                     </div>
-                    <button
-                      onClick={() => handleDeleteReview(index)}
-                      className={styles.deleteReviewButton}
-                      disabled={isDeletingReview}
-                    >
-                      Delete
-                    </button>
+                    {currentUser && review.username === currentUser.username && (
+                      <button
+                        onClick={() => handleDeleteReview(index)}
+                        className={styles.deleteReviewButton}
+                        disabled={isDeletingReview}
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                   <p className={styles.reviewComment}>{review.comment}</p>
                   {review.imageUrl && (

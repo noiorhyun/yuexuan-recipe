@@ -93,6 +93,17 @@ export async function DELETE(request, { params }) {
     const { id } = params;
     const { reviewIndex } = await request.json();
 
+    // Get the session cookie
+    const cookieStore = cookies();
+    const session = cookieStore.get('session');
+
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
+
     if (typeof reviewIndex !== 'number' || reviewIndex < 0) {
       return NextResponse.json(
         { error: 'Invalid review index' },
@@ -103,7 +114,19 @@ export async function DELETE(request, { params }) {
     const client = await clientPromise;
     const db = client.db('recipe_db');
 
-    // Get the recipe first to check if the review exists
+    // Get the current user
+    const user = await db.collection('users').findOne({
+      _id: new ObjectId(session.value)
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Get the recipe first to check if the review exists and belongs to the user
     const recipe = await db.collection('recipes').findOne({
       _id: new ObjectId(id)
     });
@@ -119,6 +142,15 @@ export async function DELETE(request, { params }) {
       return NextResponse.json(
         { error: 'Review not found' },
         { status: 404 }
+      );
+    }
+
+    // Check if the review belongs to the current user
+    const review = recipe.reviews[reviewIndex];
+    if (review.username !== user.username) {
+      return NextResponse.json(
+        { error: 'You can only delete your own reviews' },
+        { status: 403 }
       );
     }
 
