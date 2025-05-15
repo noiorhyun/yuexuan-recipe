@@ -38,6 +38,8 @@ export default function RecipeDetailPage() {
   const [reviewError, setReviewError] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isDeletingReview, setIsDeletingReview] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
     if (!id) return;
@@ -189,6 +191,37 @@ export default function RecipeDetailPage() {
       setReviewError(err.message);
     } finally {
       setIsSubmittingReview(false);
+    }
+  };
+
+  const handleDeleteReview = async (reviewIndex) => {
+    if (!window.confirm('Are you sure you want to delete this review?')) {
+      return;
+    }
+
+    setIsDeletingReview(true);
+    setDeleteError('');
+
+    try {
+      const response = await fetch(`/api/recipes/${id}/reviews`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reviewIndex }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete review');
+      }
+
+      const updatedRecipe = await response.json();
+      setRecipe(updatedRecipe);
+    } catch (err) {
+      setDeleteError(err.message);
+    } finally {
+      setIsDeletingReview(false);
     }
   };
 
@@ -368,6 +401,13 @@ export default function RecipeDetailPage() {
                     <span className={styles.reviewDate}>
                       {new Date(review.date).toLocaleDateString()}
                     </span>
+                    <button
+                      onClick={() => handleDeleteReview(index)}
+                      className={styles.deleteReviewButton}
+                      disabled={isDeletingReview}
+                    >
+                      Delete
+                    </button>
                   </div>
                   <p className={styles.reviewComment}>{review.comment}</p>
                   {review.imageUrl && (
@@ -384,6 +424,7 @@ export default function RecipeDetailPage() {
           ) : (
             <p className={styles.noReviews}>No reviews yet. Be the first to share your experience!</p>
           )}
+          {deleteError && <p className={styles.reviewError}>{deleteError}</p>}
         </div>
       </div>
     </div>

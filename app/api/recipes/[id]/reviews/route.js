@@ -53,4 +53,62 @@ export async function POST(request, { params }) {
       { status: 500 }
     );
   }
+}
+
+export async function DELETE(request, { params }) {
+  try {
+    const { id } = params;
+    const { reviewIndex } = await request.json();
+
+    if (typeof reviewIndex !== 'number' || reviewIndex < 0) {
+      return NextResponse.json(
+        { error: 'Invalid review index' },
+        { status: 400 }
+      );
+    }
+
+    const client = await clientPromise;
+    const db = client.db('recipe_db');
+
+    // Get the recipe first to check if the review exists
+    const recipe = await db.collection('recipes').findOne({
+      _id: new ObjectId(id)
+    });
+
+    if (!recipe) {
+      return NextResponse.json(
+        { error: 'Recipe not found' },
+        { status: 404 }
+      );
+    }
+
+    if (!recipe.reviews || reviewIndex >= recipe.reviews.length) {
+      return NextResponse.json(
+        { error: 'Review not found' },
+        { status: 404 }
+      );
+    }
+
+    // Remove the review at the specified index
+    const result = await db.collection('recipes').findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { 
+        $pull: { 
+          reviews: recipe.reviews[reviewIndex]
+        },
+        $set: { 
+          updatedAt: new Date() 
+        }
+      },
+      { returnDocument: 'after' }
+    );
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error('Error deleting review:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete review' },
+      { status: 500 }
+    );
+  }
 } 

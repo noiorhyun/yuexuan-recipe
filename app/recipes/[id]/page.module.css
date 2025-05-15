@@ -268,7 +268,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .reviewAuthor {
@@ -378,4 +378,24 @@
   max-height: 400px;
   border-radius: 4px;
   object-fit: cover;
+}
+
+.deleteReviewButton {
+  padding: 0.25rem 0.75rem;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.deleteReviewButton:hover {
+  background-color: #cc0000;
+}
+
+.deleteReviewButton:disabled {
+  background-color: #ffcccc;
+  cursor: not-allowed;
 } 
