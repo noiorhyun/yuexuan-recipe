@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '../../../lib/mongodb';
+import { cookies } from 'next/headers';
+import { ObjectId } from 'mongodb';
 
 /**
  * @swagger
@@ -126,10 +128,21 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
+    const cookieStore = cookies();
+    const session = cookieStore.get('session');
+
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
-    
+    const { name, ingredients, instructions, cookingTime, servings, category, imageUrl, videoUrl } = body;
+
     // Validate required fields
-    if (!body.name || !body.ingredients || !body.instructions || !body.cookingTime || !body.servings) {
+    if (!name || !ingredients || !instructions || !cookingTime || !servings) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -138,24 +151,56 @@ export async function POST(request) {
 
     const client = await clientPromise;
     const db = client.db('recipe_db');
-    
-    const result = await db.collection('recipes').insertOne({
-      ...body,
-      createdAt: new Date(),
-      updatedAt: new Date()
+
+    // Get the current user
+    const user = await db.collection('users').findOne({
+      _id: new ObjectId(session.value)
     });
-    
-    const newRecipe = {
-      _id: result.insertedId,
-      ...body,
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Create the recipe with author information
+    const recipe = {
+      name,
+      ingredients,
+      instructions,
+      cookingTime,
+      servings,
+      category: category || [],
+      imageUrl: imageUrl || null,
+      videoUrl: videoUrl || null,
+      authorId: user._id,
+      authorName: user.username,
+      reviews: [],
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    
-    return NextResponse.json(newRecipe, { status: 201 });
+
+    const result = await db.collection('recipes').insertOne(recipe);
+
+    if (!result.insertedId) {
+      throw new Error('Failed to insert recipe');
+    }
+
+    // Fetch the complete recipe after insertion to ensure all fields are present
+    const createdRecipe = await db.collection('recipes').findOne({
+      _id: result.insertedId
+    });
+
+    if (!createdRecipe) {
+      throw new Error('Failed to retrieve created recipe');
+    }
+
+    return NextResponse.json(createdRecipe, { status: 201 });
   } catch (error) {
+    console.error('Error creating recipe:', error);
     return NextResponse.json(
-      { error: 'Failed to create recipe' },
+      { error: 'Failed to create recipe', details: error.message },
       { status: 500 }
     );
   }

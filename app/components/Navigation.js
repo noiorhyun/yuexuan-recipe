@@ -44,9 +44,10 @@ export default function Navigation() {
   return (
     <nav className={styles.nav}>
       <div className={styles.navContent}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/recipes" className={styles.logo}>
           RecipeNest
         </Link>
+
         <div className={styles.navLinks}>
           <Link href="/recipes" className={styles.navLink}>
             Recipes
@@ -54,29 +55,34 @@ export default function Navigation() {
           <Link href="/categories" className={styles.navLink}>
             Categories
           </Link>
-          <div className={styles.profileDropdown} ref={profileRef}>
-            <button 
-              className={styles.profileButton}
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
-            >
-              Profile
-            </button>
-            {isProfileOpen && (
-              <div className={styles.dropdownMenu}>
-                <Link href="/profile" className={styles.dropdownItem}>
-                  My Profile
-                </Link>
-                <Link href="/my-recipes" className={styles.dropdownItem}>
-                  My Recipes
-                </Link>
-                <button onClick={handleLogout} className={styles.dropdownItem}>
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
+        </div>
+
+        <div className={styles.profileSection} ref={profileRef}>
+          <button
+            className={styles.profileButton}
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+          >
+            Profile
+          </button>
+          {isProfileOpen && (
+            <div className={styles.dropdown}>
+              <Link href="/profile" className={styles.dropdownItem}>
+                My Profile
+              </Link>
+              <Link href="/profile/my-recipes" className={styles.dropdownItem}>
+                My Recipes
+              </Link>
+              <button onClick={handleLogout} className={styles.dropdownItem}>
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
+
+      <Link href="/recipes/add" className={styles.addRecipeButton}>
+        + Add Recipe
+      </Link>
     </nav>
   );
 } 

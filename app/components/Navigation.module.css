@@ -40,6 +40,38 @@
   color: #6cbb3c;
 }
 
+.addRecipeButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #6cbb3c;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addRecipeButton:hover {
+  background-color: #5aa32c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .addRecipeButton {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0.75rem 1.5rem;
+  }
+}
+
 .profileDropdown {
   position: relative;
 }

@@ -75,15 +75,25 @@ export default function AddRecipe() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(recipeData),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add recipe');
+        if (response.status === 401) {
+          router.push('/');
+          return;
+        }
+        throw new Error(data.error || 'Failed to add recipe');
       }
 
-      router.push('/recipes');
+      if (data._id) {
+        router.push(`/recipes/${data._id}`);
+      } else {
+        throw new Error('Failed to create recipe: No recipe ID returned');
+      }
     } catch (err) {
       setError(err.message);
     }
