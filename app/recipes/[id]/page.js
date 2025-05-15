@@ -221,10 +221,12 @@ export default function RecipeDetailPage() {
     );
   }
 
-  const averageReview = recipe.reviews && recipe.reviews.length > 0
-    ? (recipe.reviews.reduce((sum, rating) => sum + rating, 0) / recipe.reviews.length).toFixed(1)
-    : null;
-  const reviewCount = recipe.reviews ? recipe.reviews.length : 0;
+  // Calculate average rating and review count
+  const validReviews = recipe.reviews ? recipe.reviews.filter(review => review.rating) : [];
+  const reviewCount = validReviews.length;
+  const averageReview = reviewCount > 0
+    ? (validReviews.reduce((sum, review) => sum + review.rating, 0) / reviewCount).toFixed(1)
+    : '0.0';
 
   // Determine YouTube embed URL
   const videoEmbedUrl = getYouTubeEmbedUrl(recipe.videoUrl);
@@ -280,7 +282,7 @@ export default function RecipeDetailPage() {
         <div className={styles.ratingDisplay}>
           {reviewCount > 0 ? (
             <p>
-              <strong>Rating:</strong> {averageReview} / 5 ({reviewCount} reviews)
+              <strong>Rating:</strong> {averageReview} / 5 ({reviewCount} {reviewCount === 1 ? 'review' : 'reviews'})
             </p>
           ) : (
             <p>No reviews yet</p>
