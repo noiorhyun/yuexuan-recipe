@@ -36,6 +36,8 @@ export default function RecipeDetailPage() {
   const [newReview, setNewReview] = useState('');
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [reviewError, setReviewError] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     if (!id) return;
@@ -117,6 +119,22 @@ export default function RecipeDetailPage() {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        setReviewError('Image size should be less than 5MB');
+        return;
+      }
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!newReview.trim()) return;
@@ -125,12 +143,35 @@ export default function RecipeDetailPage() {
     setReviewError('');
 
     try {
+      // First, upload the image if one is selected
+      let imageUrl = null;
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append('image', selectedImage);
+        
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        const uploadData = await uploadResponse.json();
+        imageUrl = uploadData.url;
+      }
+
+      // Then submit the review with the image URL
       const response = await fetch(`/api/recipes/${id}/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ comment: newReview.trim() }),
+        body: JSON.stringify({ 
+          comment: newReview.trim(),
+          imageUrl 
+        }),
       });
 
       if (!response.ok) {
@@ -141,6 +182,8 @@ export default function RecipeDetailPage() {
       const updatedRecipe = await response.json();
       setRecipe(updatedRecipe);
       setNewReview('');
+      setSelectedImage(null);
+      setImagePreview(null);
       setReviewError('');
     } catch (err) {
       setReviewError(err.message);
@@ -274,6 +317,35 @@ export default function RecipeDetailPage() {
             className={styles.reviewInput}
             required
           />
+          
+          <div className={styles.imageUploadSection}>
+            <label htmlFor="reviewImage" className={styles.imageUploadLabel}>
+              {imagePreview ? 'Change Image' : 'Add Image (optional)'}
+            </label>
+            <input
+              type="file"
+              id="reviewImage"
+              accept="image/*"
+              onChange={handleImageChange}
+              className={styles.imageInput}
+            />
+            {imagePreview && (
+              <div className={styles.imagePreviewContainer}>
+                <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedImage(null);
+                    setImagePreview(null);
+                  }}
+                  className={styles.removeImageButton}
+                >
+                  Remove Image
+                </button>
+              </div>
+            )}
+          </div>
+
           {reviewError && <p className={styles.reviewError}>{reviewError}</p>}
           <button
             type="submit"
@@ -298,6 +370,15 @@ export default function RecipeDetailPage() {
                     </span>
                   </div>
                   <p className={styles.reviewComment}>{review.comment}</p>
+                  {review.imageUrl && (
+                    <div className={styles.reviewImageContainer}>
+                      <img 
+                        src={review.imageUrl} 
+                        alt="Review" 
+                        className={styles.reviewImage}
+                      />
+                    </div>
+                  )}
                 </div>
               ))
           ) : (

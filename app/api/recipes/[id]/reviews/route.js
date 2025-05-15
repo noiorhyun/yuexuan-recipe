@@ -5,7 +5,7 @@ import clientPromise from '../../../../../lib/mongodb';
 export async function POST(request, { params }) {
   try {
     const { id } = params;
-    const { comment } = await request.json();
+    const { comment, imageUrl } = await request.json();
 
     if (!comment || typeof comment !== 'string' || comment.trim().length === 0) {
       return NextResponse.json(
@@ -20,7 +20,8 @@ export async function POST(request, { params }) {
     // Create the review object
     const review = {
       comment: comment.trim(),
-      date: new Date()
+      date: new Date(),
+      imageUrl: imageUrl || null
     };
 
     // Update the recipe with the new review

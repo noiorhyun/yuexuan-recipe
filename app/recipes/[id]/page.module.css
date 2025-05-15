@@ -316,4 +316,66 @@
     align-items: flex-start;
     gap: 0.5rem;
   }
+}
+
+.imageUploadSection {
+  margin: 1rem 0;
+}
+
+.imageUploadLabel {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #e5e7eb;
+  color: #374151;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.imageUploadLabel:hover {
+  background-color: #d1d5db;
+}
+
+.imageInput {
+  display: none;
+}
+
+.imagePreviewContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.imagePreview {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.removeImageButton {
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.removeImageButton:hover {
+  background-color: #fecaca;
+}
+
+.reviewImageContainer {
+  margin-top: 1rem;
+}
+
+.reviewImage {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 4px;
+  object-fit: cover;
 } 
