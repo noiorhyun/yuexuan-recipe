@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 // Helper function to get YouTube embed URL
 function getYouTubeEmbedUrl(url) {
@@ -236,15 +237,15 @@ export default function RecipeDetailPage() {
       <div className={styles.headerActions}>
         <Link href="/recipes" className={styles.backLink}>&larr; Back to Recipes</Link>
         <div className={styles.actionButtons}>
-          <Link href={`/recipes/edit/${id}`} className={styles.editButton}>
-            Edit Recipe
+          <Link href={`/recipes/edit/${recipe._id}`} className={styles.editButton}>
+            <FaEdit />
           </Link>
-          <button 
-            onClick={handleDelete} 
+          <button
+            onClick={handleDelete}
             className={styles.deleteButton}
             disabled={isDeleting}
           >
-            {isDeleting ? 'Deleting...' : 'Delete Recipe'}
+            <FaTrash />
           </button>
         </div>
       </div>
