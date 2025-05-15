@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { ObjectId } from 'mongodb';
 import clientPromise from '../../../../lib/mongodb';
 
 /**
@@ -46,10 +48,9 @@ export async function POST(request) {
   try {
     const { email, password } = await request.json();
 
-    // Validate required fields
     if (!email || !password) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Email and password are required' },
         { status: 400 }
       );
     }
@@ -60,17 +61,31 @@ export async function POST(request) {
     // Find user by email
     const user = await db.collection('users').findOne({ email });
 
-    // Check if user exists and password matches
     if (!user || user.password !== password) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
-        { status: 400 }
+        { status: 401 }
       );
     }
 
-    // Return user details without password
-    const { password: _, ...userWithoutPassword } = user;
-    return NextResponse.json(userWithoutPassword);
+    // Create response with success message
+    const response = NextResponse.json(
+      { message: 'Login successful' },
+      { status: 200 }
+    );
+
+    // Set session cookie with user ID
+    response.cookies.set({
+      name: 'session',
+      value: user._id.toString(),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7 // 1 week
+    });
+
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(

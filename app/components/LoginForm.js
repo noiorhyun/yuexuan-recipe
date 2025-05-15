@@ -17,13 +17,13 @@ export default function LoginForm() {
     setSuccessMessage('');
 
     try {
-      // Assume login uses email (or username) as identifier
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email, password: password }),
+        body: JSON.stringify({ email, password }),
+        credentials: 'include', // Important for cookies
       });
 
       const data = await response.json();
@@ -32,7 +32,6 @@ export default function LoginForm() {
         throw new Error(data.error || 'Login failed');
       }
 
-      localStorage.setItem('user', JSON.stringify(data));
       router.push('/recipes');
     } catch (err) {
       setError(err.message);
@@ -49,16 +48,13 @@ export default function LoginForm() {
     }
 
     try {
-      // Assuming register endpoint needs email, password, and username.
-      // We'll derive a simple username from the email for this example.
-      // Adjust this based on your actual register API requirements.
-      const username = email.split('@')[0]; 
+      const username = email.split('@')[0];
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, username }), 
+        body: JSON.stringify({ email, password, username }),
       });
 
       const data = await response.json();
@@ -68,7 +64,6 @@ export default function LoginForm() {
       }
 
       setSuccessMessage('Registration successful! You can now log in.');
-      // Optionally clear fields: setEmail(''); setPassword('');
     } catch (err) {
       setError(err.message);
     }
