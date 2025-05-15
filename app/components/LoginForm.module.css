@@ -33,17 +33,17 @@
 
 .formGroup input:focus {
   outline: none;
-  border-color: #0070f3;
-  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+  border-color: #6cbb3c;
+  box-shadow: 0 0 0 2px rgba(108, 187, 60, 0.1);
 }
 
 /* Renaming submitButton to loginButton for clarity */
 .loginButton {
   /* width: 100%; - Removed if using button container */
   padding: 0.75rem;
-  background-color: #0070f3;
+  background-color: #6cbb3c;
   color: white;
-  border: 1px solid #0070f3;
+  border: 1px solid #6cbb3c;
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
@@ -51,8 +51,8 @@
 }
 
 .loginButton:hover {
-  background-color: #0051b3;
-  border-color: #0051b3;
+  background-color: #5aa532;
+  border-color: #5aa532;
 }
 
 /* Container for buttons */
@@ -76,14 +76,14 @@
 /* Style for the secondary register button */
 .registerButton {
   background-color: white;
-  color: #0070f3;
-  border: 1px solid #0070f3;
+  color: #6cbb3c;
+  border: 1px solid #6cbb3c;
 }
 
 .registerButton:hover {
   background-color: #e6f7ff; /* Light blue background */
-  border-color: #0051b3;
-  color: #0051b3;
+  border-color: #5aa532;
+  color: #5aa532;
 }
 
 .error,
@@ -102,4 +102,28 @@
 .success {
   background-color: #e6f9f0; /* Light green */
   color: #059669; /* Darker green */
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #6cbb3c;
+  color: white;
+  border: 1px solid #6cbb3c;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.switchButton {
+  background: none;
+  border: none;
+  color: #6cbb3c;
+  border: 1px solid #6cbb3c;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 } 

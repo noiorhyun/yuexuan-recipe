@@ -51,8 +51,8 @@
 .formGroup input:focus,
 .formGroup textarea:focus {
   outline: none;
-  border-color: #0070f3;
-  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.1);
+  border-color: #6cbb3c;
+  box-shadow: 0 0 0 2px rgba(108, 187, 60, 0.1);
 }
 
 .arrayItem {
@@ -112,8 +112,14 @@
 }
 
 .submitButton {
-  background-color: #0070f3;
+  padding: 0.75rem 1.5rem;
+  background-color: #6cbb3c;
   color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .submitButton:hover {
@@ -136,6 +142,14 @@
   color: #c62828;
   border-radius: 4px;
   text-align: center;
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #6cbb3c;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 @media (max-width: 600px) {
