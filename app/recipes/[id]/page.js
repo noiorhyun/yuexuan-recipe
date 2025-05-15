@@ -290,6 +290,26 @@ export default function RecipeDetailPage() {
         </div>
       </div>
 
+      <div className={styles.contentColumns}>
+        <div className={styles.ingredientsSection}>
+          <h2>Ingredients</h2>
+          <ul className={styles.ingredientsList}>
+            {recipe.ingredients.map((ingredient, index) => (
+              <li key={index}>{ingredient}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className={styles.instructionsSection}>
+          <h2>Instructions</h2>
+          <ol className={styles.instructionsList}>
+            {recipe.instructions.map((instruction, index) => (
+              <li key={index}>{instruction}</li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
       {/* Reviews Section */}
       <div className={styles.reviewsSection}>
         <h2>Reviews</h2>
