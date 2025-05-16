@@ -4,6 +4,18 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
+const categories = [
+  'Chinese',
+  'Thai',
+  'Japanese',
+  'Mexican',
+  'Italian',
+  'Indian',
+  'Desserts',
+  'Brunch',
+  'Vegan'
+];
+
 export default function AddRecipe() {
   const [recipe, setRecipe] = useState({
     name: '',
@@ -11,7 +23,7 @@ export default function AddRecipe() {
     instructions: [''],
     cookingTime: '',
     servings: '',
-    category: '',
+    category: [],
     imageUrl: '',
     videoUrl: ''
   });
@@ -23,6 +35,14 @@ export default function AddRecipe() {
     setRecipe(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleCategoryChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    setRecipe(prev => ({
+      ...prev,
+      category: selectedOptions
     }));
   };
 
@@ -61,11 +81,11 @@ export default function AddRecipe() {
       servings: parseInt(recipe.servings, 10) || 0,
       ingredients: recipe.ingredients.filter(item => item.trim() !== ''),
       instructions: recipe.instructions.filter(item => item.trim() !== ''),
-      category: recipe.category.split(',').map(cat => cat.trim()).filter(cat => cat !== '')
+      category: recipe.category.map(cat => cat.trim()).filter(cat => cat !== '')
     };
 
-    if (!recipeData.name || recipeData.ingredients.length === 0 || recipeData.instructions.length === 0 || !recipeData.cookingTime || !recipeData.servings) {
-      setError('Please fill in all required fields (Name, Ingredients, Instructions, Cooking Time, Servings).');
+    if (!recipeData.name || recipeData.ingredients.length === 0 || recipeData.instructions.length === 0 || !recipeData.cookingTime || !recipeData.servings || recipeData.category.length === 0) {
+      setError('Please fill in all required fields (Name, Ingredients, Instructions, Cooking Time, Servings, and at least one Category).');
       return;
     }
 
@@ -142,15 +162,23 @@ export default function AddRecipe() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="category">Categories (Optional, comma-separated)</label>
-          <input
-            type="text"
+          <label htmlFor="category">Categories <span className={styles.required}>*</span></label>
+          <select
             id="category"
             name="category"
+            multiple
             value={recipe.category}
-            onChange={handleInputChange}
-            placeholder="e.g., Dinner, Quick, Chinese"
-          />
+            onChange={handleCategoryChange}
+            className={styles.categorySelect}
+            required
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+          <small className={styles.helpText}>Hold Ctrl (Windows) or Command (Mac) to select multiple categories</small>
         </div>
 
         <div className={styles.formGroup}>

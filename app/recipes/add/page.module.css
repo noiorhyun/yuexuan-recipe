@@ -29,7 +29,8 @@
 }
 
 .formGroup input,
-.formGroup textarea {
+.formGroup textarea,
+.formGroup select {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
@@ -39,7 +40,8 @@
 }
 
 .formGroup input:last-child,
-.formGroup textarea:last-child {
+.formGroup textarea:last-child,
+.formGroup select:last-child {
   margin-bottom: 0;
 }
 
@@ -49,10 +51,22 @@
 }
 
 .formGroup input:focus,
-.formGroup textarea:focus {
+.formGroup textarea:focus,
+.formGroup select:focus {
   outline: none;
   border-color: #6cbb3c;
   box-shadow: 0 0 0 2px rgba(108, 187, 60, 0.1);
+}
+
+.categorySelect {
+  min-height: 120px;
+}
+
+.helpText {
+  display: block;
+  color: #666;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
 .arrayItem {
@@ -136,11 +150,11 @@
 }
 
 .error {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background-color: #ffebee;
-  color: #c62828;
+  color: #dc2626;
+  background-color: #fee2e2;
+  padding: 1rem;
   border-radius: 4px;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -150,6 +164,11 @@
   color: #6cbb3c;
   text-decoration: none;
   font-weight: 500;
+}
+
+.required {
+  color: #dc2626;
+  margin-left: 0.25rem;
 }
 
 @media (max-width: 600px) {
