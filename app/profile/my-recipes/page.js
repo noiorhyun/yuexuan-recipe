@@ -56,7 +56,7 @@ export default function MyRecipesPage() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>My Recipes</h1>
-        <Link href="/recipes/new" className={styles.createButton}>
+        <Link href="/recipes/add" className={styles.createButton}>
           Create New Recipe
         </Link>
       </div>
@@ -64,7 +64,7 @@ export default function MyRecipesPage() {
       {recipes.length === 0 ? (
         <div className={styles.emptyState}>
           <p>You haven't published any recipes yet.</p>
-          <Link href="/recipes/new" className={styles.createButton}>
+          <Link href="/recipes/add" className={styles.createButton}>
             Create Your First Recipe
           </Link>
         </div>
