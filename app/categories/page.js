@@ -10,6 +10,9 @@ const categories = [
   { name: 'Mexican', imageUrl: 'https://www.studyspanishlatinamerica.com/blog/wp-content/uploads/2021/06/guide-to-popular-mexican-food.jpg' },
   { name: 'Italian', imageUrl: 'https://rp-cms.imgix.net/wp-content/uploads/AdobeStock_513646998-scaled.jpeg' },
   { name: 'Indian', imageUrl: 'https://res.cloudinary.com/hz3gmuqw6/image/upload/c_fill,q_auto,w_750/f_auto/tk-traditional-indian-foods-to-taste-in-2022-phpEXAXNS' },
+  { name: 'Desserts', imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80' },
+  { name: 'Brunch', imageUrl: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80' },
+  { name: 'Vegan', imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80' }
 ];
 
 export default function CategoriesPage() {
