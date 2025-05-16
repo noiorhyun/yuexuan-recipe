@@ -296,6 +296,7 @@ export default function RecipeDetailPage() {
             ))}
           </div>
         )}
+        <p><strong>Author:</strong> {recipe.authorName}</p>
         <p><strong>Cooking Time:</strong> {recipe.cookingTime} minutes</p>
         <p><strong>Servings:</strong> {recipe.servings}</p>
         <div className={styles.ratingDisplay}>
