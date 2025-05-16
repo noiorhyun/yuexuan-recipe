@@ -63,7 +63,7 @@ export default function MyRecipesPage() {
 
       {recipes.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>You haven't published any recipes yet.</p>
+          <p>You haven&apos;t published any recipes yet.</p>
           <Link href="/recipes/add" className={styles.createButton}>
             Create Your First Recipe
           </Link>

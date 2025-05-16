@@ -11,8 +11,10 @@
   "dependencies": {
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "bcryptjs": "^3.0.2",
     "mongodb": "^6.15.0",
     "next": "15.2.4",
+    "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",

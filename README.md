@@ -1,123 +1,147 @@
-# RecipeNest - Your Personal Recipe Management System
+# RecipeNest
 
-RecipeNest is a modern web application that allows users to create, manage, and share their favorite recipes. Built with Next.js and MongoDB, it provides a seamless experience for food enthusiasts to organize their culinary creations.
+RecipeNest is a modern web application for sharing and discovering recipes. Built with Next.js and MongoDB, it provides a seamless experience for food enthusiasts to create, share, and explore culinary creations.
 
 ## Features
 
-### Recipe Management
-- Create new recipes with detailed information
-- Edit existing recipes
-- Delete recipes
-- View recipe details including:
-  - Recipe name and image
-  - Cooking time and servings
-  - Categories/tags
-  - Ingredients list
-  - Step-by-step instructions
-  - Optional video links (YouTube support)
+- **User Authentication**
+  - Secure login and registration
+  - Profile management
+  - Session-based authentication
 
-### Review System
-- Rate recipes using a 5-star system
-- Add detailed reviews with comments
-- Upload images with reviews
-- View all reviews for each recipe
-- Delete your own reviews
-- Real-time average rating calculation
+- **Recipe Management**
+  - Create, edit, and delete recipes
+  - Upload recipe images
+  - Add cooking instructions and ingredients
+  - Set cooking time and servings
+  - Categorize recipes
 
-### User Interface
-- Clean and intuitive design
-- Responsive layout for all devices
-- Image upload support
-- YouTube video embedding
-- Interactive star rating system
-- Modern form controls
+- **Recipe Discovery**
+  - Browse recipes by categories
+  - Search functionality
+  - View recipe details
+  - Save favorite recipes
 
-## Technical Stack
+- **Review System**
+  - Rate recipes (1-5 stars)
+  - Add written reviews
+  - View review history
+  - Delete own reviews
 
-- **Frontend:**
+- **User Profiles**
+  - View published recipes
+  - Manage personal information
+  - Track recipe history
+
+## Tech Stack
+
+- **Frontend**
   - Next.js 14
   - React
   - CSS Modules
-  - Client-side form validation
+  - React Icons
 
-- **Backend:**
+- **Backend**
   - Next.js API Routes
-  - MongoDB for data storage
-  - RESTful API architecture
+  - MongoDB
+  - Mongoose
+  - bcryptjs (for password hashing)
+  - next-auth (for authentication)
 
-- **Features:**
-  - Server-side rendering
-  - Client-side navigation
-  - Image upload handling
-  - YouTube video embedding
+- **Authentication**
+  - NextAuth.js
+  - Session-based auth
+  - Credentials provider
+
+- **Styling**
+  - CSS Modules
   - Responsive design
+  - Modern UI components
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
+
+- Node.js 18.0 or later
 - MongoDB database
 - npm or yarn package manager
 
 ### Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/noiorhyun/yuexuan-recipe.git
-cd recipenest
-```
+   ```bash
+   git clone https://github.com/yourusername/recipenest.git
+   cd recipenest
+   ```
 
 2. Install dependencies:
-```bash
-npm install
-# or
-yarn install
-```
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-3. Set up environment variables:
-Create a `.env.local` file in the root directory with the following variables:
-```env
-MONGODB_URI=mongodb+srv://Jane:jane980511@cluster0.ocgmb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-```
+3. Install required dependencies:
+   ```bash
+   npm install bcryptjs next-auth
+   # or
+   yarn add bcryptjs next-auth
+   ```
 
-4. Run the development server:
-```bash
-npm run dev
-# or
-yarn dev
-```
+4. Set up environment variables:
+   Create a `.env.local` file in the root directory with the following variables:
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   NEXTAUTH_SECRET=your_nextauth_secret
+   NEXTAUTH_URL=http://localhost:3000
+   ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Run the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
 ```
 recipenest/
-├── app/
-│   ├── api/              # API routes
-│   ├── recipes/          # Recipe pages
-│   ├── components/       # Reusable components
-│   └── styles/          # Global styles
-├── public/              # Static files
-├── lib/                 # Utility functions
-└── package.json         # Project dependencies
+├── app/                    # Next.js app directory
+│   ├── api/               # API routes
+│   ├── components/        # Reusable components
+│   ├── recipes/          # Recipe-related pages
+│   ├── profile/          # User profile pages
+│   └── auth/             # Authentication pages
+├── lib/                   # Utility functions
+├── models/               # Database models
+├── public/               # Static assets
+└── styles/              # Global styles
 ```
 
-## API Endpoints
+## Features in Detail
 
-### Recipes
-- `GET /api/recipes` - Get all recipes
-- `GET /api/recipes/[id]` - Get a specific recipe
-- `POST /api/recipes` - Create a new recipe
-- `PUT /api/recipes/[id]` - Update a recipe
-- `DELETE /api/recipes/[id]` - Delete a recipe
+### Recipe Creation
+- Add recipe name, ingredients, and instructions
+- Set cooking time and servings
+- Upload recipe images
+- Add video links
+- Categorize recipes
 
-### Reviews
-- `POST /api/recipes/[id]/reviews` - Add a review
-- `DELETE /api/recipes/[id]/reviews` - Delete a review
+### Recipe Reviews
+- Rate recipes on a 5-star scale
+- Add detailed reviews
+- View review history
+- Delete own reviews
+- See reviewer usernames
 
-### Upload
-- `POST /api/upload` - Upload images for recipes and reviews
+### User Profiles
+- View published recipes
+- Edit profile information
+- Manage recipe collection
+- Track review history
 
 ## Contributing
 
@@ -134,7 +158,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - Next.js team for the amazing framework
-- MongoDB for the database solution
+- MongoDB for the database
 - All contributors who have helped shape this project
 
 ## Support
