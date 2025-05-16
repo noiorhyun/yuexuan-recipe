@@ -39,10 +39,21 @@ export default function AddRecipe() {
   };
 
   const handleCategoryChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    const selectedCategory = e.target.value;
+    if (selectedCategory && !recipe.category.includes(selectedCategory)) {
+      setRecipe(prev => ({
+        ...prev,
+        category: [...prev.category, selectedCategory]
+      }));
+    }
+    // Reset the select value
+    e.target.value = '';
+  };
+
+  const removeCategory = (categoryToRemove) => {
     setRecipe(prev => ({
       ...prev,
-      category: selectedOptions
+      category: prev.category.filter(cat => cat !== categoryToRemove)
     }));
   };
 
@@ -166,19 +177,37 @@ export default function AddRecipe() {
           <select
             id="category"
             name="category"
-            multiple
-            value={recipe.category}
             onChange={handleCategoryChange}
             className={styles.categorySelect}
-            required
+            required={recipe.category.length === 0}
           >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
+            <option value="">Select a category</option>
+            {categories
+              .filter(category => !recipe.category.includes(category))
+              .map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
           </select>
-          <small className={styles.helpText}>Hold Ctrl (Windows) or Command (Mac) to select multiple categories</small>
+          <div className={styles.selectedCategories}>
+            {recipe.category.map((category) => (
+              <div key={category} className={styles.categoryTag}>
+                {category}
+                <button
+                  type="button"
+                  onClick={() => removeCategory(category)}
+                  className={styles.removeCategoryButton}
+                  aria-label={`Remove ${category} category`}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+          {recipe.category.length === 0 && (
+            <small className={styles.helpText}>Please select at least one category</small>
+          )}
         </div>
 
         <div className={styles.formGroup}>
