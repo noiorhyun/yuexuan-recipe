@@ -113,7 +113,6 @@ export async function GET(request) {
       ];
     }
     
-    console.log("Executing recipe query:", query);
     const recipes = await db.collection('recipes').find(query).toArray();
     
     return NextResponse.json({ recipes });

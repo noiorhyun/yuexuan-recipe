@@ -9,8 +9,8 @@ export async function POST(request, { params }) {
     const { comment, imageUrl, rating } = await request.json();
 
     // Get the session cookie
-    const cookieStore = cookies();
-    const session = cookieStore.get('session');
+    const cookieStore = await cookies();
+    const session = await cookieStore.get('session');
 
     if (!session) {
       return NextResponse.json(
@@ -94,8 +94,8 @@ export async function DELETE(request, { params }) {
     const { reviewIndex } = await request.json();
 
     // Get the session cookie
-    const cookieStore = cookies();
-    const session = cookieStore.get('session');
+    const cookieStore = await cookies();
+    const session = await cookieStore.get('session');
 
     if (!session) {
       return NextResponse.json(

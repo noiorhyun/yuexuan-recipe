@@ -92,11 +92,12 @@ import clientPromise from '../../../../lib/mongodb';
  */
 export async function GET(req, { params }) {
   try {
+    const { id } = await params;
     const client = await clientPromise;
     const db = client.db('recipe_db');
 
     const recipe = await db.collection('recipes').findOne({
-      _id: new ObjectId(params.id)
+      _id: new ObjectId(id)
     });
 
     if (!recipe) {
@@ -117,11 +118,12 @@ export async function GET(req, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const { id } = await params;
     const client = await clientPromise;
     const db = client.db('recipe_db');
     
     const result = await db.collection('recipes').deleteOne({
-      _id: new ObjectId(params.id)
+      _id: new ObjectId(id)
     });
     
     if (result.deletedCount === 0) {
@@ -178,7 +180,7 @@ export async function DELETE(request, { params }) {
  */
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const client = await clientPromise;
     const db = client.db('recipe_db');
@@ -231,10 +233,8 @@ export async function PUT(request, { params }) {
     const result = await db.collection('recipes').findOneAndUpdate(
       { _id: new ObjectId(id) },
       updateOperation,
-      { returnDocument: 'after' } // returnNewDocument is deprecated
+      { returnDocument: 'after' }
     );
-
-    console.log('Update/Rating result:', JSON.stringify(result, null, 2));
 
     if (!result) {
       console.log('No recipe found with ID:', id);
@@ -244,9 +244,7 @@ export async function PUT(request, { params }) {
       );
     }
 
-    // Return the updated document
     return NextResponse.json(result);
-
   } catch (error) {
     console.error('Error updating recipe:', error);
     return NextResponse.json(

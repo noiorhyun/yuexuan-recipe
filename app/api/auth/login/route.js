@@ -75,6 +75,7 @@ export async function POST(request) {
     );
 
     // Set session cookie with user ID
+    const cookieStore = await cookies();
     response.cookies.set({
       name: 'session',
       value: user._id.toString(),

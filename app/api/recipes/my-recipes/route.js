@@ -6,8 +6,8 @@ import clientPromise from '../../../../lib/mongodb';
 export async function GET() {
   try {
     // Get the session cookie
-    const cookieStore = cookies();
-    const session = cookieStore.get('session');
+    const cookieStore = await cookies();
+    const session = await cookieStore.get('session');
 
     if (!session) {
       return NextResponse.json(
